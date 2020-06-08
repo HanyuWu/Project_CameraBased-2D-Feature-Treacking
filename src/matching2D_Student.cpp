@@ -68,7 +68,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     }
     else if (descriptorType.compare("BRIEF") == 0)
     {
-        cv::xfeatures2d::BriefDescriptorExtractor::create(); // default creator
+        extractor = cv::xfeatures2d::BriefDescriptorExtractor::create(); // default creator
     }
     else if (descriptorType.compare("ORB") == 0)
     {
@@ -137,7 +137,7 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
 
 void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
-    int blockSize = 2;    // for every pixel, a blockSize × blockSize neighborhood is considered
+    int blockSize = 4;    // for every pixel, a blockSize × blockSize neighborhood is considered
     int apertureSize = 3; // aperture parameter for Sobel operator (must be odd)
     double k = 0.04;      // Harris parameter
 

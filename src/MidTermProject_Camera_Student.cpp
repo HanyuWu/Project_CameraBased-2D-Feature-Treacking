@@ -45,12 +45,11 @@ int main(int argc, const char *argv[])
               << "MAT_BF or MAT_FLANN" << std::endl;
     std::cin >> matcherType; // MAT_BF, MAT_FLANN
 
-
     // selector type
     string selectorType;
     std::cout << "Please enter a type of selector\n"
               << "SEL_NN or SEL_KNN" << std::endl;
-    std::cin >> selectorType; // SEL_NN or SEL_KNN     
+    std::cin >> selectorType; // SEL_NN or SEL_KNN
 
     // camera
     string imgBasePath = dataPath + "images/";
@@ -144,7 +143,7 @@ int main(int argc, const char *argv[])
         //// EOF STUDENT ASSIGNMENT
 
         // optional : limit number of keypoints (helpful for debugging and learning)
-        bool bLimitKpts = true;
+        bool bLimitKpts = false;
         if (bLimitKpts)
         {
             int maxKeypoints = 50;
@@ -183,8 +182,8 @@ int main(int argc, const char *argv[])
             /* MATCH KEYPOINT DESCRIPTORS */
 
             vector<cv::DMatch> matches;
-            string descriptorDataType = (descriptorType == "SIFT" || descriptorType == "FAST") ? "DES_HOG" : "DES_BINARY"; // DES_BINARY, DES_HOG
-                                                                                      // SEL_NN, SEL_KNN
+            string descriptorDataType = (descriptorType == "SIFT" || descriptorType == "FAST" || descriptorType == "BRIEF") ? "DES_HOG" : "DES_BINARY"; // DES_BINARY, DES_HOG
+                                                                                                                                                        // SEL_NN, SEL_KNN
 
             //// STUDENT ASSIGNMENT
             //// TASK MP.5 -> add FLANN matching in file matching2D.cpp
