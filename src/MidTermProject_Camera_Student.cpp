@@ -42,7 +42,7 @@ int main(int argc, const char *argv[])
                 << "Neighbourhood size" << endl;
     }
     infile.close();
-    outfile.close();
+    // outfile.close();
     /* INIT VARIABLES AND DATA STRUCTURES */
 
     // data location
@@ -138,6 +138,7 @@ int main(int argc, const char *argv[])
         {
             detKeypointsModern(keypoints, imgGray, detectorType, true);
         }
+        outfile << detectorType << "," << keypoints.size() << ",";
         //// EOF STUDENT ASSIGNMENT
 
         //// STUDENT ASSIGNMENT
@@ -160,7 +161,14 @@ int main(int argc, const char *argv[])
                 }
             }
         }
-
+        float neigbourhoodsize;
+        float sum(0);
+        for (auto pt : keypoints)
+        {
+            sum += pt.size;
+        }
+        neigbourhoodsize = sum / (keypoints.size() * 1.0);
+        outfile << keypoints.size() << "," << neigbourhoodsize << endl;
         //// EOF STUDENT ASSIGNMENT
 
         // optional : limit number of keypoints (helpful for debugging and learning)
