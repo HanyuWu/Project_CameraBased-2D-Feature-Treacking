@@ -21,7 +21,28 @@ using namespace std;
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
-
+    ofstream outfile;
+    ifstream infile("../output/MP7keypoints.csv");
+    if (infile.good())
+    {
+        outfile.open("../output/MP7keypoints.csv", ios::app);
+    }
+    else
+    {
+        outfile.open("../output/MP7keypoints.csv", ios::app);
+        cout << "The log file does not exist, a new one will be created.";
+        outfile.close();
+        outfile.open("../output/MP7keypoints.csv", ios::app);
+        outfile << "Detector"
+                << ","
+                << "Total keypoints detected"
+                << ","
+                << "keypoints on vehicle"
+                << ","
+                << "Neighbourhood size" << endl;
+    }
+    infile.close();
+    outfile.close();
     /* INIT VARIABLES AND DATA STRUCTURES */
 
     // data location
