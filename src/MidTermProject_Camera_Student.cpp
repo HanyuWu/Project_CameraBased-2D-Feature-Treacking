@@ -21,6 +21,7 @@ using namespace std;
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
+    /*
     ofstream outfile;
     ifstream infile("../output/MP89matching.csv");
     if (infile.good())
@@ -45,6 +46,7 @@ int main(int argc, const char *argv[])
                 << endl;
     }
     infile.close();
+    */
     // outfile.close();
     /* INIT VARIABLES AND DATA STRUCTURES */
 
@@ -142,8 +144,7 @@ int main(int argc, const char *argv[])
             t = detKeypointsModern(keypoints, imgGray, detectorType, false);
         }
 
-        outfile << detectorType << "," << t * 1000.0 << "ms"
-                << ",";
+        // outfile << detectorType << "," << t * 1000.0 << "ms" << ",";
 
         //// EOF STUDENT ASSIGNMENT
 
@@ -167,13 +168,14 @@ int main(int argc, const char *argv[])
                 }
             }
         }
+
+        /*
         float neigbourhoodsize;
         float sum(0);
         for (auto pt : keypoints)
         {
             sum += pt.size;
         }
-        /*
         neigbourhoodsize = sum / (keypoints.size() * 1.0);
         outfile << keypoints.size() << "," << neigbourhoodsize << endl;
         */
@@ -206,8 +208,7 @@ int main(int argc, const char *argv[])
         cv::Mat descriptors;
         // string descriptorType = "BRISK"; // BRIEF, ORB, FREAK, AKAZE, SIFT
         t = descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
-        outfile << descriptorType << "," << t * 1000.0 << "ms"
-                << ",";
+        // outfile << descriptorType << "," << t * 1000.0 << "ms" << ",";
         //// EOF STUDENT ASSIGNMENT
 
         // push descriptors for current frame to end of data buffer
@@ -238,7 +239,8 @@ int main(int argc, const char *argv[])
             (dataBuffer.end() - 1)->kptMatches = matches;
 
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
-            outfile << matches.size() << endl;
+
+            // outfile << matches.size() << endl;
 
             // visualize matches between current and previous image
             bVis = true;
@@ -261,10 +263,10 @@ int main(int argc, const char *argv[])
         }
         else
         {
-            outfile << endl;
+            // outfile << endl;
         }
 
     } // eof loop over all images
-    outfile.close();
+    // outfile.close();
     return 0;
 }

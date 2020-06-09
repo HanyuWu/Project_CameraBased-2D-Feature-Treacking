@@ -32,3 +32,7 @@ See the classroom instruction and code comments for more details on each of thes
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./2D_feature_tracking`.
+
+## Comparison of Detector/Descriptor Combinations
+
+All the results have been logged [here](./output). Please feel free to check on those results (MP7 to MP9). The top3 combination would be FAST/BRIEF, FAST/BRISK, and FAST/ORB. The following ones are ORB/BRISK and ORB/BRIEF. These combination proecess the image in less than 15ms, and could be as fast as in 5ms. I think those combination can be used in real-time detection.
