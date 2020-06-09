@@ -22,24 +22,27 @@ using namespace std;
 int main(int argc, const char *argv[])
 {
     ofstream outfile;
-    ifstream infile("../output/MP7keypoints.csv");
+    ifstream infile("../output/MP89matching.csv");
     if (infile.good())
     {
-        outfile.open("../output/MP7keypoints.csv", ios::app);
+        outfile.open("../output/MP89matching.csv", ios::app);
     }
     else
     {
-        outfile.open("../output/MP7keypoints.csv", ios::app);
+        outfile.open("../output/MP89matching.csv", ios::app);
         cout << "The log file does not exist, a new one will be created.";
         outfile.close();
-        outfile.open("../output/MP7keypoints.csv", ios::app);
-        outfile << "Detector"
+        outfile.open("../output/MP89matching.csv", ios::app);
+        outfile << "Detector Name"
                 << ","
-                << "Total keypoints detected"
+                << "Detection Time"
                 << ","
-                << "keypoints on vehicle"
+                << "Descriptor Name"
                 << ","
-                << "Neighbourhood size" << endl;
+                << "Description Time"
+                << ","
+                << "Number of matches"
+                << endl;
     }
     infile.close();
     // outfile.close();
@@ -84,6 +87,7 @@ int main(int argc, const char *argv[])
     int dataBufferSize = 2;       // no. of images which are held in memory (ring buffer) at the same time
     vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
     bool bVis = false;            // visualize results
+    double t(0);                  // Time log placeholder
 
     /* MAIN LOOP OVER ALL IMAGES */
 
@@ -125,20 +129,22 @@ int main(int argc, const char *argv[])
         //// STUDENT ASSIGNMENT
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
-
         if (detectorType.compare("SHITOMASI") == 0)
         {
-            detKeypointsShiTomasi(keypoints, imgGray, true);
+            t = detKeypointsShiTomasi(keypoints, imgGray, false);
         }
         else if (detectorType.compare("HARRIS") == 0)
         {
-            detKeypointsHarris(keypoints, imgGray, true);
+            t = detKeypointsHarris(keypoints, imgGray, false);
         }
         else
         {
-            detKeypointsModern(keypoints, imgGray, detectorType, true);
+            t = detKeypointsModern(keypoints, imgGray, detectorType, false);
         }
-        outfile << detectorType << "," << keypoints.size() << ",";
+
+        outfile << detectorType << "," << t * 1000.0 << "ms"
+                << ",";
+
         //// EOF STUDENT ASSIGNMENT
 
         //// STUDENT ASSIGNMENT
@@ -167,8 +173,10 @@ int main(int argc, const char *argv[])
         {
             sum += pt.size;
         }
+        /*
         neigbourhoodsize = sum / (keypoints.size() * 1.0);
         outfile << keypoints.size() << "," << neigbourhoodsize << endl;
+        */
         //// EOF STUDENT ASSIGNMENT
 
         // optional : limit number of keypoints (helpful for debugging and learning)
@@ -197,7 +205,9 @@ int main(int argc, const char *argv[])
 
         cv::Mat descriptors;
         // string descriptorType = "BRISK"; // BRIEF, ORB, FREAK, AKAZE, SIFT
-        descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
+        t = descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
+        outfile << descriptorType << "," << t * 1000.0 << "ms"
+                << ",";
         //// EOF STUDENT ASSIGNMENT
 
         // push descriptors for current frame to end of data buffer
@@ -228,6 +238,7 @@ int main(int argc, const char *argv[])
             (dataBuffer.end() - 1)->kptMatches = matches;
 
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
+            outfile << matches.size() << endl;
 
             // visualize matches between current and previous image
             bVis = true;
@@ -248,8 +259,12 @@ int main(int argc, const char *argv[])
             }
             bVis = false;
         }
+        else
+        {
+            outfile << endl;
+        }
 
     } // eof loop over all images
-
+    outfile.close();
     return 0;
 }
