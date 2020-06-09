@@ -73,7 +73,23 @@ double descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &des
     }
     else if (descriptorType.compare("ORB") == 0)
     {
-        extractor = cv::ORB::create(); // default creator
+        int nfeatures = 500;
+        float scaleFactor = 1.2f;
+        int nlevels = 8;
+        int edgeThreshold = 31;
+        int firstLevel = 0;
+        int WTA_K = 2;
+        int patchSize = 31;
+        int fastThreshold = 20;
+        extractor = cv::ORB::create(nfeatures,
+                                    scaleFactor,
+                                    nlevels,
+                                    edgeThreshold,
+                                    firstLevel,
+                                    WTA_K,
+                                    cv::ORB::HARRIS_SCORE,
+                                    patchSize,
+                                    fastThreshold);
     }
     else if (descriptorType.compare("FREAK") == 0)
     {
